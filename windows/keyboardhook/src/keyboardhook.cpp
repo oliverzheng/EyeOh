@@ -90,14 +90,75 @@ LRESULT CALLBACK KeyboardFunc(int nCode, WPARAM wParam, LPARAM lParam)
 	}
 }
 
+#define SENDKEY(input, key, up) \
+	do { \
+		input->type = INPUT_KEYBOARD; \
+		input->ki.wVk = key; \
+		input->ki.time = 0; \
+		input->ki.dwExtraInfo = INJECT_KEY_IDENTIFIER; \
+		if (up) \
+			input->ki.dwFlags = KEYEVENTF_KEYUP; \
+		input++; \
+	} while (0)
+
+#define SENDKEYDOWN(input, key) SENDKEY(input, key, 0)
+#define SENDKEYUP(input, key) SENDKEY(input, key, 1)
+
+enum PressState {
+	NOCHANGE,
+	DOWN,
+	UP,
+};
+
+#define SEND(input, modifiers, mask, vk, send) \
+	PressState send##_sent = NOCHANGE; \
+	do { \
+		/* Change modifier state if current state is not the desired */ \
+		if ((modifiers & mask) ^ (GetKeyState(vk) < 0)) \
+		{ \
+			if (modifiers & mask) \
+			{ \
+				send##_sent = DOWN; \
+				SENDKEYDOWN(input, send); \
+			} \
+			else \
+			{ \
+				send##_sent = UP; \
+				SENDKEYUP(input, send); \
+			} \
+		} \
+	} while (0)
+
+#define RESTORE(input, send) \
+	do { \
+		if (send##_sent == DOWN) \
+			SENDKEYUP(input, send); \
+		else if (send##_sent == UP) \
+			SENDKEYDOWN(input, send); \
+	} while (0)
+
+#define MAX_KEYPRESSES	8
+
 DECLDIR BOOL InjectKey(eyeoh::Key key)
 {
-	::INPUT input = {0};
-	input.type = INPUT_KEYBOARD;
-	input.ki.wVk = key.key;
-	input.ki.time = 0;
-	input.ki.dwExtraInfo = INJECT_KEY_IDENTIFIER;
-	::SendInput(1, &input, sizeof(INPUT));
+	::INPUT inputs[MAX_KEYPRESSES] = {0};
+	::INPUT * input = inputs;
+
+	if (key.key == 0)
+		return TRUE;
+
+	SEND(input, key.modifiers, eyeoh::Key::SHIFT, VK_SHIFT, VK_LSHIFT);
+	SEND(input, key.modifiers, eyeoh::Key::ALT, VK_MENU, VK_LMENU);
+	SEND(input, key.modifiers, eyeoh::Key::CTRL, VK_CONTROL, VK_LCONTROL);
+
+	SENDKEYDOWN(input, key.key);
+	SENDKEYUP(input, key.key);
+
+	RESTORE(input, VK_LCONTROL);
+	RESTORE(input, VK_LMENU);
+	RESTORE(input, VK_LSHIFT);
+
+	::SendInput(input - inputs, inputs, sizeof(INPUT));
 
 	return TRUE;
 };
