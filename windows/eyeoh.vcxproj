@@ -90,7 +90,7 @@
     <ClCompile Include="..\core\StateMap.cpp" />
     <ClCompile Include="..\core\UserConfig.cpp" />
     <ClCompile Include="..\core\util.cpp" />
-    <ClCompile Include="..\plugins\KeyboardOutput.cpp" />
+    <ClCompile Include="..\plugins\src\KeyboardOutput.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\WindowsKeyboard.cpp" />
   </ItemGroup>

@@ -25,6 +25,9 @@
     <Filter Include="plugins\inc">
       <UniqueIdentifier>{b39ae976-e14c-4d5b-8198-763610de964d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="plugins\src">
+      <UniqueIdentifier>{e417c272-8990-401f-af6f-b91502668d1f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\core\Keyboard.cpp">
@@ -45,8 +48,8 @@
     <ClCompile Include="src\WindowsKeyboard.cpp">
       <Filter>windows\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\plugins\KeyboardOutput.cpp">
-      <Filter>plugins</Filter>
+    <ClCompile Include="..\plugins\src\KeyboardOutput.cpp">
+      <Filter>plugins\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
