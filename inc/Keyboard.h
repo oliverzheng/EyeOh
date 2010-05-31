@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <stdexcept>
+#include <list>
 
 namespace eyeoh {
 
@@ -43,12 +44,27 @@ namespace eyeoh {
 	class Keyboard
 	{
 	public:
+		static const char MACRO_OPEN = '{';
+		static const char MACRO_CLOSE = '}';
+
 		virtual const std::vector<KeyName> & GetKeyNames() const = 0;
 		virtual Key operator[](KeyName & keyname) const = 0;
 		virtual KeyName operator[](Key & keypress) const = 0;
 		virtual bool contains(KeyName & keyname) const = 0;
 		virtual bool contains(Key & keypress) const = 0;
 		virtual const Keyboard & operator<<(Key & keypress) const = 0;
+
+		// If keynames match, fills in the list of keys and returns true.
+		// Returns false otherwise. This includes modifier keys, thus can have spaces.
+		bool GetKeys(const KeyName & value, std::list<Key> & keys) const;
+
+		// If the keyname matches a key, fills in key and returns true.
+		// Returns false otherwise.
+		bool GetSequenceKeys(const KeyName & keynames, std::list<Key> & keys) const;
+
+		// If the keyname matches a key, fills in key and returns true.
+		// Returns false otherwise.
+		bool GetModifierKey(const KeyName & keyname, Key & key) const;
 	};
 
 }

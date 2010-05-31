@@ -19,6 +19,7 @@ namespace eyeoh {
 
 	public:
 		KeyboardOutput(const Keyboard & keyboard, std::list<Key> & keys);
+		virtual ~KeyboardOutput();
 
 		virtual void Do();
 	};

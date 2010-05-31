@@ -14,9 +14,6 @@ namespace eyeoh {
 	class UserConfig
 	{
 	private:
-		static const char special_open = '{';
-		static const char special_close = '}';
-
 		Keyboard & keyboard;
 		StateMap statemap;
 		std::vector<OutputFactoryFunc> outputFactoryFuncs;

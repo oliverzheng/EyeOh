@@ -32,12 +32,7 @@ WindowsKeyboard::WindowsKeyboard(const char * keys)
 		list<string> key_l;
 
 		// Extract hex keycode
-		getline(file, key_s);
-
-		// Remove \r at the end of the line.
-		size_t slash_r = key_s.find_last_of('\r');
-		if (slash_r != string::npos)
-			key_s.erase(slash_r);
+		getliner(file, key_s);
 
 		key_l = split(key_s, ' ');
 		string keycode_s = key_l.front();

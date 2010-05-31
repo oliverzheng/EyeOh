@@ -9,21 +9,23 @@ IOutput * KeyboardOutput::Create(const Keyboard & keyboard, const string & value
 {
 	list<Key> & keys = *new list<Key>;
 
-	for (string::const_iterator it = value.begin(); it != value.end(); it++)
+	if (!keyboard.GetKeys(value, keys))
 	{
-		string keyname;
-		stringstream ss;
-		ss << *it;
-		ss >> keyname;
-
-		keys.push_back(keyboard[keyname]);
+		delete &keys;
+		return NULL;
 	}
+
 	return new KeyboardOutput(keyboard, keys);
 }
 
 KeyboardOutput::KeyboardOutput(const Keyboard & keyboard, list<Key> & keys)
 	: keyboard(keyboard), keys(keys)
 {
+}
+
+KeyboardOutput::~KeyboardOutput()
+{
+	delete &(this->keys);
 }
 
 void KeyboardOutput::Do()

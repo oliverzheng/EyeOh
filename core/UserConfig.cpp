@@ -1,6 +1,7 @@
 #include <fstream>
 #include <sstream>
 
+#include "util.h"
 #include "UserConfig.h"
 
 using namespace std;
@@ -23,31 +24,35 @@ bool UserConfig::ParseFile(string filepath)
 	{
 		file >> skipws;
 
-		string input, value;
+		string input;
 		while(!file.eof())
 		{
-			// Input is the user keystrokes; value is the expanded keystrokes.
-			file >> input >> value;
+			string line;
+
+			// Input is the user keystrokes
+			getliner(file, line);
+
+			// Blank lines
+			if (line.empty())
+				continue;
+
+			list<string> io = split(line, '=');
+			if (io.size() != 2)
+				throw logic_error("There isn't exactly 1 '=' in the user config");
+			input = io.front();
+			strip(input);
+
 			StateMap * statemap = &(this->statemap);
 
 			// For each keystroke, extend the transition state machine by a new state.
-			for (string::iterator it = input.begin(); it != input.end(); it++)
-			{
-				string keyname;
-				if (*it == UserConfig::special_open)
-				{
-					continue;
-				}
-				else
-				{
-					stringstream ss;
-					ss << *it;
-					ss >> keyname;
-				}
+			list<Key> keys;
+			if (!this->keyboard.GetKeys(input, keys))
+				return false;
+			for (list<Key>::iterator it = keys.begin(); it != keys.end(); it++)
+				statemap = &((*statemap) << *it);
 
-				statemap = &((*statemap) << this->keyboard[keyname]);
-			}
-
+			string value = io.back();
+			strip(value);
 			IOutput * output = NULL;
 			for (vector<OutputFactoryFunc>::iterator it = this->outputFactoryFuncs.begin();
 				it != this->outputFactoryFuncs.end() && output == NULL; it++)

@@ -7,6 +7,7 @@ namespace eyeoh {
 	{
 	public:
 		virtual void Do() = 0;
+		virtual ~IOutput() {};
 	};
 
 }
