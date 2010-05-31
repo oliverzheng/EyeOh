@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="core">
+      <UniqueIdentifier>{027ee106-dea9-4111-8b50-afff94a9fd67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="inc">
+      <UniqueIdentifier>{aceaf0ab-50c3-4920-916a-0a71b40770f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="plugins">
+      <UniqueIdentifier>{5279fd50-dde1-4ba1-8808-dfca352065b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="windows">
+      <UniqueIdentifier>{ed4327ce-07b0-41f1-a916-f83d62731848}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="windows\inc">
+      <UniqueIdentifier>{4b6a2486-b5d7-43e1-bdc1-64b5b4de443d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="windows\res">
+      <UniqueIdentifier>{ba82dbb2-b6f8-4287-ae7c-ced75faa628a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="windows\src">
+      <UniqueIdentifier>{986a60c3-b35e-4440-a3bf-5681e79806a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="plugins\inc">
+      <UniqueIdentifier>{b39ae976-e14c-4d5b-8198-763610de964d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\core\Keyboard.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\StateMap.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\UserConfig.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\util.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>windows\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WindowsKeyboard.cpp">
+      <Filter>windows\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\plugins\KeyboardOutput.cpp">
+      <Filter>plugins</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\inc\config.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\IOutput.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\Keyboard.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\StateMap.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\UserConfig.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\util.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\keyboardhook.h">
+      <Filter>windows\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\WindowsKeyboard.h">
+      <Filter>windows\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\plugins\inc\KeyboardOutput.h">
+      <Filter>plugins\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\win_config.h">
+      <Filter>windows\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\resource.h">
+      <Filter>windows\inc</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\windows_keys.txt">
+      <Filter>windows\res</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\windows_keys.rc">
+      <Filter>windows\res</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
