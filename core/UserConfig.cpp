@@ -57,7 +57,7 @@ bool UserConfig::ParseFile(string filepath)
 			for (vector<OutputFactoryFunc>::iterator it = this->outputFactoryFuncs.begin();
 				it != this->outputFactoryFuncs.end() && output == NULL; it++)
 			{
-				output = (**it)(this->keyboard, value);
+				output = (**it)(this->keyboard, value, keys);
 			}
 
 			(*statemap) << *output;

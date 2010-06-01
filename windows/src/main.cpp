@@ -11,6 +11,7 @@
 #include "StateMap.h"
 
 #include "KeyboardOutput.h"
+#include "ModeSwitcher.h"
 
 using namespace eyeoh;
 using namespace std;
@@ -123,6 +124,7 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	UserConfig userconfig(keyboard);
 
 	// Plugins
+	userconfig.AddOutput(ModeSwitcher::Create);
 	userconfig.AddOutput(KeyboardOutput::Create);
 
 	::TCHAR szPath[MAX_PATH];
@@ -143,6 +145,9 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	wstring filepath(szPath);
 	if (!userconfig.ParseFile(string(filepath.begin(), filepath.end())))
 		return -1;
+
+	// Plugins
+	ModeSwitcher::SetStateMap(userconfig.GetStateMap());
 
 	if (!EyeOh::MakeWindow(hInstance, userconfig.GetStateMap()))
 		return -1;

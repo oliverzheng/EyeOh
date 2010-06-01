@@ -9,7 +9,7 @@
 #include "Keyboard.h"
 
 namespace eyeoh {
-	typedef IOutput * (* OutputFactoryFunc)(const Keyboard &, const std::string &);
+	typedef IOutput * (* OutputFactoryFunc)(const Keyboard &, const std::string &, const std::list<Key> &);
 
 	class UserConfig
 	{

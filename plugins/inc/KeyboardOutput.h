@@ -11,7 +11,7 @@ namespace eyeoh {
 	class KeyboardOutput : public IOutput
 	{
 	public:
-		static IOutput * Create(const Keyboard & keyboard, const std::string & value);
+		static IOutput * Create(const Keyboard & keyboard, const std::string & value, const std::list<Key> & triggerKeys);
 
 	private:
 		const Keyboard & keyboard;

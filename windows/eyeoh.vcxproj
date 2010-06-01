@@ -90,6 +90,7 @@
     <ClCompile Include="..\core\StateMap.cpp" />
     <ClCompile Include="..\core\UserConfig.cpp" />
     <ClCompile Include="..\core\util.cpp" />
+    <ClCompile Include="..\plugins\inc\ModeSwitcher.cpp" />
     <ClCompile Include="..\plugins\src\KeyboardOutput.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\WindowsKeyboard.cpp" />
@@ -102,6 +103,7 @@
     <ClInclude Include="..\inc\UserConfig.h" />
     <ClInclude Include="..\inc\util.h" />
     <ClInclude Include="..\plugins\inc\KeyboardOutput.h" />
+    <ClInclude Include="..\plugins\inc\ModeSwitcher.h" />
     <ClInclude Include="inc\resource.h" />
     <ClInclude Include="inc\win_config.h" />
     <ClInclude Include="inc\keyboardhook.h" />

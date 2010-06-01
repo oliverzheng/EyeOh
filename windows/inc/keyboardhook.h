@@ -13,6 +13,9 @@
 #define INJECT_KEY_IDENTIFIER	1
 
 DECLDIR BOOL InjectKey(eyeoh::Key key);
-DECLDIR BOOL InstallKeyboardHook (HWND hWnd, UINT uMyMsg);
+DECLDIR BOOL InstallKeyboardHook(HWND hWnd, UINT uMyMsg);
+
+DECLDIR VOID Disable(unsigned short keycode);
+DECLDIR VOID Enable();
 
 #endif

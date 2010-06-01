@@ -8,6 +8,8 @@ static HWND hWndMain = NULL;
 static HHOOK hKeyHook = NULL;
 static HINSTANCE hInstance = 0;
 static HOOKPROC lpfnHookProc = 0;
+static BOOL enabled = TRUE;
+static unsigned short enable_key = 0;
 
 LRESULT __stdcall KeyboardFunc (int nCode, WPARAM wParam, LPARAM lParam);
 
@@ -32,6 +34,7 @@ DECLDIR BOOL InstallKeyboardHook(HWND hWnd, UINT uMyMsg)
 	lpfnHookProc = (HOOKPROC)KeyboardFunc;
 	hKeyHook = SetWindowsHookEx(WH_KEYBOARD_LL, lpfnHookProc, hInstance, NULL);
 	hWndMain = hWnd;
+	enabled = TRUE;
  
 	if (hKeyHook)
 		return TRUE;
@@ -55,6 +58,8 @@ LRESULT CALLBACK KeyboardFunc(int nCode, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN:
 	case WM_SYSKEYDOWN:
 		key.key = pkbHook->vkCode;
+		if (!enabled && key.key != enable_key)
+			break;
 
 		if (GetKeyState(VK_SHIFT) < 0)
 			key.modifiers |= eyeoh::Key::SHIFT;
@@ -85,9 +90,7 @@ LRESULT CALLBACK KeyboardFunc(int nCode, WPARAM wParam, LPARAM lParam)
 	if (bPassThrough)
 		return (CallNextHookEx(hKeyHook, nCode, wParam, lParam));
 	else
-	{
 		return TRUE;
-	}
 }
 
 #define SENDKEY(input, key, up) \
@@ -162,3 +165,14 @@ DECLDIR BOOL InjectKey(eyeoh::Key key)
 
 	return TRUE;
 };
+
+DECLDIR VOID Disable(unsigned short enable_keycode)
+{
+	enable_key = enable_keycode;
+	enabled = FALSE;
+}
+
+DECLDIR VOID Enable()
+{
+	enabled = TRUE;
+}

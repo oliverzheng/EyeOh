@@ -5,7 +5,7 @@
 using namespace eyeoh;
 using namespace std;
 
-IOutput * KeyboardOutput::Create(const Keyboard & keyboard, const string & value)
+IOutput * KeyboardOutput::Create(const Keyboard & keyboard, const string & value, const std::list<Key> & triggerKeys)
 {
 	list<Key> & keys = *new list<Key>;
 
