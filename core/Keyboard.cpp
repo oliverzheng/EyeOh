@@ -109,11 +109,14 @@ bool Keyboard::GetModifierKey(const KeyName & keyname, Key & key) const
 	}
 
 	string key_single = keynames.back();
-
-	if (!this->contains(key_single))
+	list<Key> keys;
+	if (!this->GetSequenceKeys(key_single, keys))
 		return false;
 
-	key.key = (*this)[key_single].key;
+	if (keys.size() != 1)
+		return false;
+
+	key.key = keys.front().key;
 
 	return true;
 }
