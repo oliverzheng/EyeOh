@@ -8,7 +8,7 @@ using namespace std;
 using namespace eyeoh;
 
 UserConfig::UserConfig(Keyboard & keyboard)
-	: keyboard(keyboard)
+	: keyboard(&keyboard)
 {
 }
 
@@ -46,7 +46,7 @@ bool UserConfig::ParseFile(string filepath)
 
 			// For each keystroke, extend the transition state machine by a new state.
 			list<Key> keys;
-			if (!this->keyboard.GetKeys(input, keys))
+			if (!this->keyboard->GetKeys(input, keys))
 				return false;
 			for (list<Key>::iterator it = keys.begin(); it != keys.end(); it++)
 				statemap = &((*statemap) << *it);
@@ -57,7 +57,7 @@ bool UserConfig::ParseFile(string filepath)
 			for (vector<OutputFactoryFunc>::iterator it = this->outputFactoryFuncs.begin();
 				it != this->outputFactoryFuncs.end() && output == NULL; it++)
 			{
-				output = (**it)(this->keyboard, value, keys);
+				output = (**it)(*(this->keyboard), value, keys);
 			}
 
 			(*statemap) << *output;

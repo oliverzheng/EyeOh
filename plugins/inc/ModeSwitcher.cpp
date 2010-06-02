@@ -15,7 +15,7 @@ void ModeSwitcher::SetStateMap(StateMap & statemap)
 	ModeSwitcher::statemap = &statemap;
 }
 
-IOutput * ModeSwitcher::Create(const Keyboard & keyboard, const std::string & value, const std::list<Key> & triggerKeys)
+IOutput * ModeSwitcher::Create(const Keyboard &, const std::string & value, const std::list<Key> & triggerKeys)
 {
 	// Currently only supports a single key to trigger command mode. :(
 	// Need some sort of incoming key filtering system to have multi-key triggers.

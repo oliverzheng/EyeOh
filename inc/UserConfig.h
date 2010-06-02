@@ -14,7 +14,7 @@ namespace eyeoh {
 	class UserConfig
 	{
 	private:
-		Keyboard & keyboard;
+		Keyboard * keyboard;
 		StateMap statemap;
 		std::vector<OutputFactoryFunc> outputFactoryFuncs;
 

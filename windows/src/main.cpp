@@ -110,6 +110,10 @@ void LoadFileInResource(int name, int type, DWORD * size, const char ** data)
 int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance,
                     PSTR szCmdLine, int iCmdShow)
 {
+	UNREFERENCED_PARAMETER(iCmdShow);
+	UNREFERENCED_PARAMETER(szCmdLine);
+	UNREFERENCED_PARAMETER(hPrevInstance);
+
     DWORD size = 0;
     const char * data = NULL;
     LoadFileInResource(IDR_WINDOWSKEYS, TEXTFILE, &size, &data);

@@ -5,7 +5,7 @@
 using namespace eyeoh;
 using namespace std;
 
-IOutput * KeyboardOutput::Create(const Keyboard & keyboard, const string & value, const std::list<Key> & triggerKeys)
+IOutput * KeyboardOutput::Create(const Keyboard & keyboard, const string & value, const std::list<Key> &)
 {
 	list<Key> & keys = *new list<Key>;
 
@@ -19,19 +19,19 @@ IOutput * KeyboardOutput::Create(const Keyboard & keyboard, const string & value
 }
 
 KeyboardOutput::KeyboardOutput(const Keyboard & keyboard, list<Key> & keys)
-	: keyboard(keyboard), keys(keys)
+	: keyboard(&keyboard), keys(&keys)
 {
 }
 
 KeyboardOutput::~KeyboardOutput()
 {
-	delete &(this->keys);
+	delete this->keys;
 }
 
 void KeyboardOutput::Do()
 {
-	for (list<Key>::iterator it = this->keys.begin(); it != this->keys.end(); it++)
+	for (list<Key>::iterator it = this->keys->begin(); it != this->keys->end(); it++)
 	{
-		this->keyboard << *it;
+		*(this->keyboard) << *it;
 	}
 }

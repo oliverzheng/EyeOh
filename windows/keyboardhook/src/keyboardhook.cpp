@@ -15,6 +15,8 @@ LRESULT __stdcall KeyboardFunc (int nCode, WPARAM wParam, LPARAM lParam);
 
 BOOL APIENTRY DllMain (HANDLE hModule, DWORD dwReason, LPVOID lpReserved) 
 {
+	UNREFERENCED_PARAMETER(lpReserved);
+
 	switch (dwReason)
 	{
 	case DLL_PROCESS_ATTACH:
@@ -57,7 +59,7 @@ LRESULT CALLBACK KeyboardFunc(int nCode, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_KEYDOWN:
 	case WM_SYSKEYDOWN:
-		key.key = pkbHook->vkCode;
+		key.key = (unsigned short)pkbHook->vkCode;
 		if (!enabled && key.key != enable_key)
 			break;
 
@@ -93,16 +95,26 @@ LRESULT CALLBACK KeyboardFunc(int nCode, WPARAM wParam, LPARAM lParam)
 		return TRUE;
 }
 
+#define DO_WHILE_0_BEGIN do {
+#define DO_WHILE_0_END \
+	__pragma(warning(push)) \
+	__pragma(warning(disable:4127)) \
+	} while(0) \
+	__pragma(warning(pop))
+
 #define SENDKEY(input, key, up) \
-	do { \
+	DO_WHILE_0_BEGIN \
 		input->type = INPUT_KEYBOARD; \
 		input->ki.wVk = key; \
 		input->ki.time = 0; \
 		input->ki.dwExtraInfo = INJECT_KEY_IDENTIFIER; \
+		__pragma(warning(push)) \
+		__pragma(warning(disable:4127)) \
 		if (up) \
 			input->ki.dwFlags = KEYEVENTF_KEYUP; \
+		__pragma(warning(pop)) \
 		input++; \
-	} while (0)
+	DO_WHILE_0_END
 
 #define SENDKEYDOWN(input, key) SENDKEY(input, key, 0)
 #define SENDKEYUP(input, key) SENDKEY(input, key, 1)
@@ -115,7 +127,7 @@ enum PressState {
 
 #define SEND(input, modifiers, mask, vk, send) \
 	PressState send##_sent = NOCHANGE; \
-	do { \
+	DO_WHILE_0_BEGIN \
 		/* Change modifier state if current state is not the desired */ \
 		if ((modifiers & mask) ^ (GetKeyState(vk) < 0)) \
 		{ \
@@ -130,15 +142,15 @@ enum PressState {
 				SENDKEYUP(input, send); \
 			} \
 		} \
-	} while (0)
+	DO_WHILE_0_END
 
 #define RESTORE(input, send) \
-	do { \
+	DO_WHILE_0_BEGIN \
 		if (send##_sent == DOWN) \
 			SENDKEYUP(input, send); \
 		else if (send##_sent == UP) \
 			SENDKEYDOWN(input, send); \
-	} while (0)
+	DO_WHILE_0_END
 
 #define MAX_KEYPRESSES	8
 

@@ -11,7 +11,7 @@
 
 namespace eyeoh {
 
-	class NoOutput : std::logic_error
+	class NoOutput : public std::logic_error
 	{
 	public:
 		NoOutput();

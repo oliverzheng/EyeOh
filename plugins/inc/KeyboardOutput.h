@@ -14,8 +14,8 @@ namespace eyeoh {
 		static IOutput * Create(const Keyboard & keyboard, const std::string & value, const std::list<Key> & triggerKeys);
 
 	private:
-		const Keyboard & keyboard;
-		std::list<Key> & keys;
+		const Keyboard * keyboard;
+		std::list<Key> * keys;
 
 	public:
 		KeyboardOutput(const Keyboard & keyboard, std::list<Key> & keys);
