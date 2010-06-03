@@ -102,7 +102,7 @@ LRESULT CALLBACK KeyboardFunc(int nCode, WPARAM wParam, LPARAM lParam)
 	} while(0) \
 	__pragma(warning(pop))
 
-#define SENDKEY(input, key, up) \
+#define SENDKEY(input, key, extended, up) \
 	DO_WHILE_0_BEGIN \
 		input->type = INPUT_KEYBOARD; \
 		input->ki.wVk = key; \
@@ -110,14 +110,16 @@ LRESULT CALLBACK KeyboardFunc(int nCode, WPARAM wParam, LPARAM lParam)
 		input->ki.dwExtraInfo = INJECT_KEY_IDENTIFIER; \
 		__pragma(warning(push)) \
 		__pragma(warning(disable:4127)) \
+		if (extended) \
+			input->ki.dwFlags |= KEYEVENTF_EXTENDEDKEY; \
 		if (up) \
-			input->ki.dwFlags = KEYEVENTF_KEYUP; \
+			input->ki.dwFlags |= KEYEVENTF_KEYUP; \
 		__pragma(warning(pop)) \
 		input++; \
 	DO_WHILE_0_END
 
-#define SENDKEYDOWN(input, key) SENDKEY(input, key, 0)
-#define SENDKEYUP(input, key) SENDKEY(input, key, 1)
+#define SENDKEYDOWN(input, key, extended) SENDKEY(input, key, extended, 0)
+#define SENDKEYUP(input, key, extended) SENDKEY(input, key, extended, 1)
 
 enum PressState {
 	NOCHANGE,
@@ -134,12 +136,12 @@ enum PressState {
 			if (modifiers & mask) \
 			{ \
 				send##_sent = DOWN; \
-				SENDKEYDOWN(input, send); \
+				SENDKEYDOWN(input, send, 0); \
 			} \
 			else \
 			{ \
 				send##_sent = UP; \
-				SENDKEYUP(input, send); \
+				SENDKEYUP(input, send, 0); \
 			} \
 		} \
 	DO_WHILE_0_END
@@ -147,27 +149,53 @@ enum PressState {
 #define RESTORE(input, send) \
 	DO_WHILE_0_BEGIN \
 		if (send##_sent == DOWN) \
-			SENDKEYUP(input, send); \
+			SENDKEYUP(input, send, 0); \
 		else if (send##_sent == UP) \
-			SENDKEYDOWN(input, send); \
+			SENDKEYDOWN(input, send, 0); \
 	DO_WHILE_0_END
 
 #define MAX_KEYPRESSES	8
 
+// This is not documented anywhere.
+// See http://www.experts-exchange.com/Programming/Languages/Pascal/Delphi/Q_21737163.html
+static const unsigned short EXTENDED_KEYS[] = {
+	VK_UP,
+	VK_DOWN,
+	VK_LEFT,
+	VK_RIGHT,
+	VK_HOME,
+	VK_END,
+	VK_PRIOR,
+	VK_NEXT,
+	VK_INSERT,
+	VK_DELETE
+};
+
 DECLDIR BOOL InjectKey(eyeoh::Key key)
 {
+	if (key.key == 0)
+		return TRUE;
+
 	::INPUT inputs[MAX_KEYPRESSES] = {0};
 	::INPUT * input = inputs;
 
-	if (key.key == 0)
-		return TRUE;
+	BOOL extended = FALSE;
+
+	for (int i = 0; i < sizeof(EXTENDED_KEYS) / sizeof(EXTENDED_KEYS[0]); i++)
+	{
+		if (key.key == EXTENDED_KEYS[i])
+		{
+			extended = TRUE;
+			break;
+		}
+	}
 
 	SEND(input, key.modifiers, eyeoh::Key::SHIFT, VK_SHIFT, VK_LSHIFT);
 	SEND(input, key.modifiers, eyeoh::Key::ALT, VK_MENU, VK_LMENU);
 	SEND(input, key.modifiers, eyeoh::Key::CTRL, VK_CONTROL, VK_LCONTROL);
 
-	SENDKEYDOWN(input, key.key);
-	SENDKEYUP(input, key.key);
+	SENDKEYDOWN(input, key.key, extended);
+	SENDKEYUP(input, key.key, extended);
 
 	RESTORE(input, VK_LCONTROL);
 	RESTORE(input, VK_LMENU);
