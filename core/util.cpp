@@ -29,5 +29,7 @@ istream & getliner(istream & file, string & line)
 
 void strip(string & line)
 {
-	line.erase(remove_if(line.begin(), line.end(), ::isspace), line.end());
+	char const whitespace [] = " \t";
+	line.erase(0, line.find_first_not_of(whitespace));
+	line.erase(line.find_last_not_of(whitespace) + 1);
 }
