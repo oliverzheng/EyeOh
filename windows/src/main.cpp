@@ -78,16 +78,14 @@ LRESULT CALLBACK EyeOh::WndProc (HWND hwnd, UINT message, WPARAM wParam, LPARAM 
 {
 	Key & key = *(Key *)wParam;
 	unsigned char & processed = *(unsigned char *)lParam;
-	pair<StateMap::ChangeResult, StateMap::OutputResult> result;
 
 	switch (message)
 	{
 	case HOOK_MSG:
-		result = EyeOh::statemap->OnPress(key);
-		if (result.first == StateMap::RESET && result.second == StateMap::OUTPUT)
-			processed = 1;
-		else
-			processed = 0;
+		EyeOh::statemap->OnPress(key);
+		// Marking all received keys as processed.
+		// It's confusing to have non-processed keys at this point...
+		processed = 1;
 		break;
 
 	case WM_DESTROY:
