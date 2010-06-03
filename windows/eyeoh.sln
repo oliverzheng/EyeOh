@@ -8,6 +8,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "eyeoh", "eyeoh.vcxproj", "{
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "keyboardhook", "keyboardhook\keyboardhook.vcxproj", "{56E6CC52-449E-464D-96C2-84C6597C5F40}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "setup", "setup\setup.vdproj", "{BE6DACF8-450F-471C-8B3A-C344D69D2771}"
+	ProjectSection(ProjectDependencies) = postProject
+		{56B4E03E-6203-45D5-B87D-884FB30C5492} = {56B4E03E-6203-45D5-B87D-884FB30C5492}
+		{56E6CC52-449E-464D-96C2-84C6597C5F40} = {56E6CC52-449E-464D-96C2-84C6597C5F40}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -22,6 +28,8 @@ Global
 		{56E6CC52-449E-464D-96C2-84C6597C5F40}.Debug|Win32.Build.0 = Debug|Win32
 		{56E6CC52-449E-464D-96C2-84C6597C5F40}.Release|Win32.ActiveCfg = Release|Win32
 		{56E6CC52-449E-464D-96C2-84C6597C5F40}.Release|Win32.Build.0 = Release|Win32
+		{BE6DACF8-450F-471C-8B3A-C344D69D2771}.Debug|Win32.ActiveCfg = Debug
+		{BE6DACF8-450F-471C-8B3A-C344D69D2771}.Release|Win32.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
