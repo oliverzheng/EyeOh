@@ -1,0 +1,22 @@
+{ESCAPE} = Reset()
+i = PassThrough()
+
+j = {DOWN}
+k = {UP}
+h = {LEFT}
+l = {RIGHT}
+
+w = C-{RIGHT}
+b = C-{LEFT}
+
+0 = {HOME}
+{DOLLAR} = {END}
+
+gg = C-{HOME} {HOME}
+
+o = {END}{ENTER}
+O = {HOME}{ENTER}{UP}
+
+x = {DELETE}
+dd = {HOME} S-{END} {DELETE}{DELETE}
+u = C-z
