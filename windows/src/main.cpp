@@ -145,14 +145,17 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		return -1;
 
 	// If file does not exist, copy default configuration over.
-	::TCHAR szDefaultConfig[MAX_PATH] = TEXT("");
-	if (::SHGetKnownFolderPath(::FOLDERID_ProgramFiles, 0, NULL, &ppszPath) != S_OK)
-		return -1;
-	wcsncat_s(szDefaultConfig, ppszPath, MAX_PATH);
-	wcsncat_s(szDefaultConfig, TEXT("\\") TEXT(PROGRAMFILES_DIR) TEXT("\\") TEXT(DEFAULT_CONFIG), MAX_PATH);
-	if (::CopyFile(szDefaultConfig, szPath, TRUE) == 0)
-		if (::GetLastError() != ERROR_ACCESS_DENIED)
+	if (GetFileAttributes(szPath) == INVALID_FILE_ATTRIBUTES)
+	{
+		::TCHAR szDefaultConfig[MAX_PATH] = TEXT("");
+		if (::SHGetKnownFolderPath(::FOLDERID_ProgramFiles, 0, NULL, &ppszPath) != S_OK)
 			return -1;
+		wcsncat_s(szDefaultConfig, ppszPath, MAX_PATH);
+		wcsncat_s(szDefaultConfig, TEXT("\\") TEXT(PROGRAMFILES_DIR) TEXT("\\") TEXT(DEFAULT_CONFIG), MAX_PATH);
+		if (::CopyFile(szDefaultConfig, szPath, TRUE) == 0)
+			if (::GetLastError() != ERROR_ACCESS_DENIED)
+				return -1;
+	}
 
 	wstring filepath(szPath);
 	if (!userconfig.ParseFile(string(filepath.begin(), filepath.end())))
